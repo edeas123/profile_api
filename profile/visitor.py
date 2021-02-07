@@ -2,7 +2,7 @@ import boto3
 from datetime import datetime
 
 
-def record_visit(ip_address):
+def record_visit(ip_address, table_name):
 
     dynamodb = boto3.client('dynamodb')
     key = {
@@ -12,9 +12,9 @@ def record_visit(ip_address):
     }
     ts = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
     response = dynamodb.update_item(
-        TableName="ProfileVisitor",
+        TableName=table_name,
         Key=key,
-        ReturnValues="UPDATED_NEW",
+        ReturnValues="ALL_NEW",
         ExpressionAttributeNames={
             '#NV': "NumberOfVisits",
             "#LV": "LastVisited",
@@ -33,12 +33,11 @@ def record_visit(ip_address):
 
     # use the 0.0.0.0 address to track the number of unique visits
     status_code = response["ResponseMetadata"]["HTTPStatusCode"]
-    count = response["Attributes"]["NumberOfVisits"]["N"]
+    count = int(response["Attributes"]["NumberOfVisits"]["N"])
     first_visit = response["Attributes"]["FirstVisited"]["S"]
 
     uv = 0
-    if first_visit == ts:
-        # this is a new visitor
+    if count == 1:  # this was the first visit
         uv = 1
 
     local_key = {
@@ -47,9 +46,9 @@ def record_visit(ip_address):
         }
     }
     local_response = dynamodb.update_item(
-        TableName="ProfileVisitor",
+        TableName=table_name,
         Key=local_key,
-        ReturnValues="UPDATED_NEW",
+        ReturnValues="ALL_NEW",
         ExpressionAttributeValues={":uv": {"N": str(uv)}},
         UpdateExpression="ADD NumberOfUniqueVisits :uv"
     )
@@ -58,5 +57,5 @@ def record_visit(ip_address):
     return status_code, {
         "visits": count,
         "first_visit": first_visit,
-        "unique_visits": unique_count
+        "unique_visits": int(unique_count)
     }

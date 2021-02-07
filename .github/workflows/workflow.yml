@@ -1,0 +1,17 @@
+name: Api
+on:
+  push:
+    branch: [main]
+jobs:
+  test:
+    name: Test Lambda functions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install requirements
+        run: pip install -r requirements.txt
+
+      - name: Test functions
+        run: pytest tests

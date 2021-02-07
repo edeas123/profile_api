@@ -12,7 +12,8 @@ def create(event, context):
 
     if request_headers:
         ip_address = request_headers.get("X-Forwarded-For", "localhost")
-        status_code, body = record_visit(ip_address=ip_address)
+        table_name = "ProfileVisitor"
+        status_code, body = record_visit(ip_address=ip_address, table_name=table_name)
 
         origin = request_headers.get("origin", None)
         headers = {}
