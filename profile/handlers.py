@@ -6,7 +6,7 @@ from visitor import record_visit
 def create(event, context):
     # get data from event object
     headers = event.get("headers", None)
-    print(event)
+
     if headers:
         ip_address = headers.get("X-Forwarded-For", "localhost")
         status_code, body = record_visit(ip_address=ip_address)
@@ -18,3 +18,11 @@ def create(event, context):
             },
             'body': json.dumps(body)
         }
+
+    return {
+        'statusCode': 400,
+        'headers': {
+           'Access-Control-Allow-Origin': "*"
+        },
+        'body': json.dumps({})
+    }

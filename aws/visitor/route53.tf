@@ -2,7 +2,7 @@ data "aws_route53_zone" "profile" {
   name = local.domain
 }
 
-resource "aws_route53_record" "www" {
+resource "aws_route53_record" "profile" {
   name    = "api.${local.domain}"
   type    = "A"
   zone_id = data.aws_route53_zone.profile.zone_id

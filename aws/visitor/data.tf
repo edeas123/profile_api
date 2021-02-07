@@ -2,7 +2,7 @@ locals {
   region  = "us-east-1"
   service = "visitor"
   table = "ProfileVisitor"
-  domain = "mybytesni.com"
+  domain = "iamobaro.com"
 }
 
 

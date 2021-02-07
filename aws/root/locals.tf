@@ -1,6 +1,6 @@
 locals {
   profile_name = "profile"
-  domain_name = "mybytesni.com"
+  domain_name = "iamobaro.com"
 }
 
 data "aws_acm_certificate" "domain" {
