@@ -5,7 +5,7 @@ on:
       - main
 jobs:
   test:
-    name: Test Lambda functions
+    name: Test and Deploy Lambda functions
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -22,7 +22,7 @@ jobs:
       - name: Test functions
         run: pytest
 
-      - name: Package function
+      - name: Package functions code
         run: zip -r visitor_record_visit.zip profile
 
       - name: Configure AWS credentials
