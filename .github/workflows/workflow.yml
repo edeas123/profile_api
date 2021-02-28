@@ -33,4 +33,4 @@ jobs:
           aws-region: us-east-1
 
       - name: Copy package functions to s3
-        run: aws s3 cp visitor_record_visit.zip s3://mybytesni-lambdas-use1
+        run: aws s3 cp visitor_record_visit.zip ${{ secrets.S3_BUCKET_URI }}
