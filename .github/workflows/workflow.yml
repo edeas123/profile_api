@@ -23,7 +23,7 @@ jobs:
         run: pytest
 
       - name: Package functions code
-        run: zip -r visitor_record_visit.zip profile
+        run: cd profile; zip -r ../visitor_record_visit.zip .; cd ..
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
